@@ -3,13 +3,12 @@ segment .text
     global _ft_strcat
 
 _ft_strcat:
-    mov r10, 0
+    push rdi  ; On garde en mémoire l'adresse de rdi car on va itérer dessus après
 
 goDestEnd:
     cmp BYTE[rdi], 0
     jz copyLoop
     inc rdi
-    inc r10
     jmp goDestEnd
 
 copyLoop:
@@ -19,10 +18,10 @@ copyLoop:
     mov BYTE[rdi], al
     inc rsi
     inc rdi
-    inc r10
     jmp copyLoop
 
 exit:
-    sub rdi, r10
-    mov rax, rdi
+    pop rax
+    ; On remet rdi (push ligne 6 lorsque l'on avait pas encore itéré dessus, donc rdi pointe sur le début du string)
+    ; Le pop prend le dernier push et le met dans le registre demandé
     ret

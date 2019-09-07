@@ -18,7 +18,7 @@ int       ft_puts(const char *s);
 size_t		ft_strlen(const char *str);
 
 void      ft_bzero(void *s, size_t n);
-
+void      *ft_memset(void *b, int c, size_t len);
 char	    *ft_strcat(char *dest, const char *src);
 
 # endif

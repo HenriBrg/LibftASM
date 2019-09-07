@@ -37,10 +37,12 @@ int main()
   char dst3[15] = "DST";
   char src4[5]  = "SRC";
   char dst4[15] = "DST";
-  strcat(dst3, src3);
-  ft_strcat(dst4, src4);
+  char *dstPtr3 = strcat(dst3, src3);
+  char *dstPtr4 = ft_strcat(dst4, src4);
   printf("-------- STRCAT  --------> ");
-  strcmp(dst3, dst4) == 0 ? printf("OK\n") : printf("KO\n");
+  strcmp(dstPtr3, dstPtr4) == 0 ? printf("OK\n") : printf("KO\n");
+  // printf("%s\n", dstPtr3);
+  // printf("%s\n", dstPtr4);
 
   /* ------------------------------------------------------------------------ */
   printf("-------- STRLEN  --------> ");
@@ -50,5 +52,13 @@ int main()
   write(1, "-------- PUTS    --------> ", 27);
   char strPuts[30] = "OK";
   ft_puts(strPuts);
+
+  /* ------------------------------------------------------------------------ */
+  printf("-------- MEMSET  --------> ");
+  char strMemset[10] = "RempliDeA";
+  ft_memset(strMemset, 'A', 9);
+  strcmp("AAAAAAAAA", strMemset) == 0 ? printf("OK\n") : printf("KO\n");
+
+
   return (0);
 }
