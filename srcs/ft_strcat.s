@@ -3,7 +3,7 @@ segment .text
     global _ft_strcat
 
 _ft_strcat:
-    push rdi  ; On garde en mémoire l'adresse de rdi car on va itérer dessus après
+    push rdi  ; On garde en mémoire (c.a.d on met dans la stack) l'adresse de rdi car on va itérer dessus après
 
 goDestEnd:
     cmp BYTE[rdi], 0

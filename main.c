@@ -59,6 +59,19 @@ int main()
   ft_memset(strMemset, 'A', 9);
   strcmp("AAAAAAAAA", strMemset) == 0 ? printf("OK\n") : printf("KO\n");
 
+  /* ------------------------------------------------------------------------ */
+  printf("-------- MEMCPY  --------> ");
+  char srcMCPY[5] = "Hello";
+  char dstMCPY1[10] = "aaaaaaaaa";
+  char dstMCPY2[10] = "aaaaaaaaa";
+  memcpy(dstMCPY1, srcMCPY, 3);
+  ft_memcpy(dstMCPY2, srcMCPY, 3);
+  (strcmp(dstMCPY1, dstMCPY2) == 0) ? printf("OK\n") : printf("KO\n");
+
+  /* ------------------------------------------------------------------------ */
+  printf("-------- STRDUP  --------> ");
+  char *testSTRDUP = ft_strdup("aaa");
+  (strcmp("aaa", testSTRDUP) == 0) ? printf("OK\n") : printf("KO\n");
 
   return (0);
 }
