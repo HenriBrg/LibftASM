@@ -73,5 +73,9 @@ int main()
   char *testSTRDUP = ft_strdup("aaa");
   (strcmp("aaa", testSTRDUP) == 0) ? printf("OK\n") : printf("KO\n");
 
+  /* ------------------------------------------------------------------------ */
+  write(1, "-------- CAT     --------> ", 27);
+  int fd = open("auteur", O_RDONLY);
+  ft_cat(fd);
   return (0);
 }

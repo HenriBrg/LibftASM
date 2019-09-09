@@ -1,73 +1,46 @@
+%define READ 3
+%define WRITE 4
+%define STDOUT 1
+%define MACH_SYSCALL(nb) 0x2000000 | nb
+
+; 0x2000000 | nb = Opérateur binaire "ou inclusif"
+; En binaire 0x2000000 = 10000000000000000000000000
+; Exemple : MACH_SYSCALL(4) = 10000000000000000000000000 | 100 = 10000000000000000000000100 = 0x2000004
+
+
+section .data
+    buffer times 64 db 0       ; "réserve 64 bytes pour buffer" - Buffer is just an array, which in assembly is a sequence of bytes.
+    bufsize equ $ - buffer     ;  Stock la taille de buffer dans bufsize
+
 section .text
 
     global _ft_cat
 
+; Recoder cat via une fonction qui prend en paramètre un fd
+; L'open est fait en amont car on a le fd, donc on gère pas non plus le close
+
+; Paramètres : ft_cat(int fd)
+
 _ft_cat:
+    push rbp
+    mov rbp, rsp
 
+readAndWrite:
+    mov rax, MACH_SYSCALL(READ)   ; Identifiant syscall
+    push rdi                      ; On stock le fd dans la stack
+    lea rsi, [rel buffer]         ; Stockage du buffer qui va contenir le texte
+    mov rdx, bufsize
+    syscall
+    cmp rax, 0
+    jle exit
+    mov rdi, STDOUT               ; Le FD étant stocké dans RDI, il est écrasé, mais on l'a stocké dans la stack :)
+    mov rdx, rax                  ; On prend le retour de read comme size (nbr de caractères) à afficher
+    mov rax, MACH_SYSCALL(WRITE)
+    syscall
+    pop rdi
+    jmp readAndWrite
 
-
-; void	ft_putstr(char *str)
-; {
-; 	int i;
-;
-; 	i = 0;
-; 	while (str[i] != '\0')
-; 	{
-; 		write(2, &str[i], 1);
-; 		i++;
-; 	}
-; }
-;
-; void	handle_error(char *filename, int error, char *execname)
-; {
-; 	ft_putstr(basename(execname));
-; 	ft_putstr(": ");
-; 	ft_putstr(basename(filename));
-; 	ft_putstr(": ");
-; 	ft_putstr(strerror(error));
-; 	write(2, "\n", 1);
-; }
-;
-; void	handle_file(int fd, char *filename, char *execname)
-; {
-; 	char	buffer[1];
-;
-; 	while (read(fd, &buffer, 1) > 0)
-; 		write(1, buffer, 1);
-; 	if (read(fd, buffer, 1) == -1)
-; 		handle_error(filename, errno, execname);
-; 	if (close(fd) == -1)
-; 		handle_error(filename, errno, execname);
-; }
-;
-; void	handle_input(void)
-; {
-; 	char buffer[1];
-;
-; 	while (read(STDIN, buffer, 1) > 0)
-; 		write(1, buffer, 1);
-; }
-;
-; int		main(int ac, char **av)
-; {
-; 	int i;
-; 	int fd;
-;
-; 	i = 1;
-; 	if (ac == 1)
-; 		handle_input();
-; 	while (i < ac)
-; 	{
-; 		if (av[i][0] == '-' && av[i][1] == '\0')
-; 		{
-; 			handle_input();
-; 			return (0);
-; 		}
-; 		else if ((fd = open(av[i], O_RDONLY)) == -1)
-; 			handle_error(av[i], errno, av[0]);
-; 		else if (fd != -1)
-; 			handle_file(fd, av[i], av[0]);
-; 		i++;
-; 	}
-; 	return (0);
-; }
+exit:
+    mov rsp, rbp
+    pop rbp
+    ret

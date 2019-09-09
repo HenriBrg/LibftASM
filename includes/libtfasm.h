@@ -4,6 +4,7 @@
 # include <stdio.h>
 # include <string.h>
 # include <unistd.h>
+# include <fcntl.h>
 
 int       ft_isalpha(int c);
 int       ft_isdigit(int c);
@@ -17,6 +18,7 @@ int       ft_puts(const char *s);
 
 size_t		ft_strlen(const char *str);
 
+void      ft_cat(int fd);
 void      ft_bzero(void *s, size_t n);
 void      *ft_memset(void *b, int c, size_t len);
 void      *ft_memcpy(void *dst, const void *src, size_t n);
